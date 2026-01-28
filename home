@@ -1,1 +1,639 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Path to Trifecta Training | Home</title>
+  <meta name="description" content="Strength-first base build and race-ready performance plan for the 2026 Spartan Trifecta." />
+  <!--
+    NOTE (Ben):
+    - This file is intentionally self-contained.
+    - Keep the <style> block consistent across pages.
+    - Replace image URLs later.
+  -->
+
+  <style>
+    :root{
+      --bg: #070B14;
+      --panel: rgba(12,16,30,0.72);
+      --panel-2: rgba(12,16,30,0.88);
+      --stroke: rgba(255,255,255,0.12);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.70);
+      --muted-2: rgba(255,255,255,0.58);
+      --accent: #FF6A2A;
+      --accent-2: #1E63FF;
+      --shadow: 0 18px 60px rgba(0,0,0,0.55);
+      --radius: 18px;
+      --radius-lg: 24px;
+      --max: 1120px;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; background-color: var(--bg) !important; }
+    body{
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text) !important;
+      background:
+        radial-gradient(1100px 620px at 18% 10%, rgba(30,99,255,0.18), transparent 60%),
+        radial-gradient(900px 520px at 82% 12%, rgba(255,106,42,0.16), transparent 55%),
+        radial-gradient(900px 520px at 50% 105%, rgba(255,106,42,0.10), transparent 55%),
+        var(--bg) !important;
+      background-color: var(--bg) !important;
+      line-height: 1.55;
+      letter-spacing: 0.1px;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: none; }
+
+    .container{ width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+
+    /* Header */
+    .site-header{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background: rgba(7,11,20,0.65);
+      border-bottom: 1px solid var(--stroke);
+    }
+
+    .header-inner{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 0;
+    }
+
+    .brand{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 180px;
+    }
+
+    .brand img{
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.06);
+      object-fit: cover;
+    }
+
+    .brand .title{
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand .title strong{ font-size: 14px; letter-spacing: 0.3px; }
+    .brand .title span{ font-size: 12px; color: var(--muted-2); }
+
+    .nav{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a{
+      font-size: 13px;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: 120ms ease;
+    }
+
+    .nav a:hover{
+      color: var(--text);
+      border-color: var(--stroke);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .nav a.active{
+      color: var(--text);
+      border-color: rgba(255,106,42,0.40);
+      background: rgba(255,106,42,0.10);
+    }
+
+    /* Hero */
+    .hero{
+      padding: 18px 0 0;
+    }
+
+    .hero-card{
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      background: rgba(255,255,255,0.02);
+      min-height: 280px;
+    }
+
+    .hero-media{
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(7,11,20,0.86) 0%, rgba(7,11,20,0.25) 55%, rgba(7,11,20,0.86) 100%),
+        url("./assets/hero-path-to-trifecta.png") /* banner placeholder */;
+      background-size: cover;
+      background-position: center;
+      filter: saturate(1.02);
+      transform: scale(1.02);
+    }
+
+    .hero-content{
+      position: relative;
+      padding: 28px;
+      display: grid;
+      gap: 10px;
+      max-width: 760px;
+    }
+
+    .eyebrow{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .chip{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      width: fit-content;
+    }
+
+    .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(255,106,42,0.18);
+    }
+
+    h1{
+      margin: 0;
+      font-size: clamp(26px, 4vw, 42px);
+      line-height: 1.05;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 60ch;
+    }
+
+    .cta-row{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-size: 13px;
+      transition: 140ms ease;
+    }
+
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .btn.primary{
+      border-color: rgba(255,106,42,0.55);
+      background: rgba(255,106,42,0.12);
+    }
+
+    .btn.primary:hover{ background: rgba(255,106,42,0.18); }
+
+    /* Main */
+    main{ padding: 18px 0 36px; }
+
+    .section{
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius-lg);
+      background: rgba(12,16,30,0.55);
+    }
+
+    .section-header{
+      display: grid;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .section-header h2{
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0.2px;
+    }
+
+    .section-header p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 85ch;
+    }
+
+    .grid-2{
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .grid-3{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+
+    .card h3{
+      margin: 0 0 6px;
+      font-size: 14px;
+      letter-spacing: 0.2px;
+    }
+
+    .card p{ margin: 0; color: var(--muted); font-size: 13px; }
+
+    .list{
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .list li{
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .check{
+      width: 18px;
+      height: 18px;
+      border-radius: 8px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.06);
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .pill-row{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .pill{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.05);
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    /* Footer */
+    footer{
+      border-top: 1px solid var(--stroke);
+      background: rgba(7,11,20,0.55);
+      padding: 18px 0;
+      color: var(--muted-2);
+      font-size: 12px;
+    }
+
+    .footer-inner{
+      display: grid;
+      gap: 8px;
+    }
+
+    .fineprint{ max-width: 95ch; }
+
+    /* Responsive */
+    @media (max-width: 960px){
+      .grid-3{ grid-template-columns: 1fr; }
+      .grid-2{ grid-template-columns: 1fr; }
+      .hero-content{ padding: 22px; }
+      .nav{ justify-content: flex-start; }
+    }
+
+    @media (max-width: 520px){
+      .container{ width: min(var(--max), calc(100% - 28px)); }
+      .brand{ min-width: unset; }
+      .brand .title span{ display: none; }
+      .hero-card{ min-height: 320px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./home.html" aria-label="The Path to Trifecta Training home">
+        <img src="./assets/logo.png" alt="Path to Trifecta logo" />
+        <div class="title">
+          <strong>Path to Trifecta</strong>
+          <span>Jan to Jun 2026 training map</span>
+        </div>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a class="active" href="./home.html">Home</a>
+        <a href="./january.html">January</a>
+        <a href="./february.html">February</a>
+        <a href="./march.html">March</a>
+        <a href="./april.html">April</a>
+               <a href="./may.html">May</a>
+        <a href="./june.html">June</a></nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-card">
+        <div class="hero-media" role="img" aria-label="The Path to Trifecta Training hero image"></div>
+        <div class="hero-content">
+          <div class="eyebrow">
+            <span class="chip"><span class="dot"></span> Strength first, always</span>
+            <span>Earn your medals: Sprint, Super, Beast</span>
+          </div>
+          <h1>The Path to Trifecta Training</h1>
+          <p class="subtitle">
+            A strength-first build from January to June 2026, tuned in real time using your daily logs.
+          </p>
+          <div class="cta-row">
+            <a class="btn primary" href="#plans">View the plan map</a>
+            <a class="btn" href="./january.html">Start with January</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <div class="container">
+
+      <section id="plans" class="section">
+        <div class="section-header">
+          <h2>Strength-first base build (January to March 2026):</h2>
+          <p>
+            Build upper-body strength and total-body power while keeping moderate, repeatable endurance work.
+            This block builds your engine without stealing recovery from strength gains.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Rules of the road</h3>
+            <ul class="list">
+              <li><span class="check">✓</span><span><strong>Strength is the main event</strong>: 3 focused lifts per week, plus 1 short grip session.</span></li>
+              <li><span class="check">✓</span><span><strong>Cardio is controlled</strong>: 2 runs per week (one easy, one mixed), plus optional Zone 2 cross-training.</span></li>
+              <li><span class="check">✓</span><span><strong>Mobility is non-negotiable</strong>: 10 minutes after every session, plus 1 longer reset day weekly.</span></li>
+              <li><span class="check">✓</span><span><strong>Progress slowly</strong>: add small reps or small load weekly, stop 1 to 2 reps before failure most sets.</span></li>
+            </ul>
+            <div class="pill-row" aria-label="Plan emphasis">
+              <span class="pill">Upper body strength</span>
+              <span class="pill">Grip durability</span>
+              <span class="pill">Moderate endurance</span>
+              <span class="pill">Recovery first</span>
+            </div>
+          </div>
+
+          <div class="card" style="background: var(--panel-2);">
+            <h3>Purpose</h3>
+            <p>
+              Build a repeatable training groove that stacks strength gains while keeping your aerobic base alive.
+            </p>
+            <div style="height: 10px"></div>
+            <h3>North Star</h3>
+            <p><strong>Finish strong, not tired.</strong></p>
+            <div style="height: 10px"></div>
+            <h3>Races</h3>
+            <ul class="list">
+              <li><span class="check">✓</span><span>🍀 <strong>Irish Double</strong>: March 15<br><span style="color: var(--muted-2);">8K + 5K run</span></span></li>
+              <li><span class="check">✓</span><span>🏃‍♂️‍➡️ <strong>Owens Corning</strong>: April 26<br><span style="color: var(--muted-2);">Half marathon run</span></span></li>
+              <li><span class="check">✓</span><span>🏔️ <strong>2026 Trifecta Weekend</strong>: June 6–7<br><span style="color: var(--muted-2);">Beast 21K • Super 10K • Sprint 5K</span></span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2>Build the base: habits, strength, grip, and controlled running mileage.</h2>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <h3>January: Foundation Month</h3>
+            <p><strong>Theme:</strong> Restart → Rebuild → Reset</p>
+            <ul class="list">
+              <li><span class="check">✓</span><span>Light strength to build habits</span></li>
+              <li><span class="check">✓</span><span>Easy runs 2 to 5 miles</span></li>
+              <li><span class="check">✓</span><span>Begin hanging work</span></li>
+              <li><span class="check">✓</span><span>Restore mobility (hips, hamstrings, piriformis)</span></li>
+              <li><span class="check">✓</span><span>Protect sleep and adjust schedule rhythm</span></li>
+              <li><span class="check">✓</span><span>No heavy loads yet</span></li>
+            </ul>
+            <div class="cta-row" style="margin-top: 12px;">
+              <a class="btn" href="./january.html">Open January</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>February: Strength & Grip Month</h3>
+            <p><strong>Theme:</strong> Lift + Hang + Build</p>
+            <ul class="list">
+              <li><span class="check">✓</span><span>Strength increases weekly</span></li>
+              <li><span class="check">✓</span><span>Hanging endurance grows (30 to 60 sec holds)</span></li>
+              <li><span class="check">✓</span><span>Runs extend to 5 to 7 miles</span></li>
+              <li><span class="check">✓</span><span>Introduce moderate deadlifts</span></li>
+              <li><span class="check">✓</span><span>Carry strength begins</span></li>
+            </ul>
+            <div class="cta-row" style="margin-top: 12px;">
+              <a class="btn" href="./february.html">Open February</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>March: Power & Terrain Month</h3>
+            <p><strong>Theme:</strong> Add power + hills + obstacle practice</p>
+            <ul class="list">
+              <li><span class="check">✓</span><span>Hill workouts start (treadmill incline or trails)</span></li>
+              <li><span class="check">✓</span><span>Power movements: step-ups, box work, sled substitutions</span></li>
+              <li><span class="check">✓</span><span>Heavier lifting (safe ramp from February)</span></li>
+              <li><span class="check">✓</span><span>Long runs 7 to 9 miles</span></li>
+              <li><span class="check">✓</span><span>Begin mixed workouts: run + hang, run + burpees, run + carries</span></li>
+            </ul>
+            <div class="cta-row" style="margin-top: 12px;">
+              <a class="btn" href="./march.html">Open March</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <h2>Strength-to-Performance (April to June 2026)</h2>
+          <p>
+            Convert strength into race-ready performance. April and May build volume and specificity. June tapers volume so you arrive fresh, strong, and confident.
+          </p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Rules of the road</h3>
+            <ul class="list">
+              <li><span class="check">✓</span><span><strong>Strength stays on the schedule</strong>: keep 2–3 lifts per week so power doesn’t leak.</span></li>
+              <li><span class="check">✓</span><span><strong>Hybrid specificity</strong>: pair grip + carries + movement so obstacles feel normal under fatigue.</span></li>
+              <li><span class="check">✓</span><span><strong>Run volume builds, then tapers</strong>: longer weekends in April/May, no long runs in early June.</span></li>
+              <li><span class="check">✓</span><span><strong>Pacing + fueling are trained</strong>: practice what you’ll do on race day (not just fitness).</span></li>
+              <li><span class="check">✓</span><span><strong>Recovery is a skill</strong>: mobility after sessions, one reset day weekly, sleep consistency guarded.</span></li>
+              <li><span class="check">✓</span><span><strong>Downshift fast</strong>: if pain or sleep/fatigue spikes, reduce volume 20–30% and prioritize mobility/sleep.</span></li>
+            </ul>
+            <div class="pill-row" aria-label="Plan emphasis">
+              <span class="pill">Obstacle durability</span>
+              <span class="pill">Hybrid endurance</span>
+              <span class="pill">Pacing + fueling</span>
+              <span class="pill">Arrive fresh</span>
+            </div>
+          </div>
+
+          <div class="card" style="background: var(--panel-2);">
+            <h3>Purpose</h3>
+            <p>
+              Turn your strength base into race-ready performance: durable grip, confident carries, and steady movement when tired.
+            </p>
+            <div style="height: 10px"></div>
+            <h3>North Star</h3>
+            <p><strong>Arrive rested, confident, spring-loaded.</strong></p>
+            <div style="height: 10px"></div>
+            <h3>Early June: Taper focus</h3>
+            <ul class="list">
+              <li><span class="check">✓</span><span>Light strength, light running, lots of mobility</span></li>
+              <li><span class="check">✓</span><span>No long runs</span></li>
+              <li><span class="check">✓</span><span>Technical practice: hanging, rope climb, carries</span></li>
+              <li><span class="check">✓</span><span>Sleep and nutrition dialed in</span></li>
+              <li><span class="check">✓</span><span><strong>Goal:</strong> Walk into June 6th feeling spring-loaded</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="height: 14px"></div>
+
+        <div class="section-header">
+          <h2>April simulates, May peaks, June sharpens and executes the weekend.</h2>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <h3>April: Simulation Month</h3>
+            <p><strong>Theme:</strong> Put it all together</p>
+            <ul class="list">
+              <li><span class="check">✓</span><span>Simulated obstacle circuits</span></li>
+              <li><span class="check">✓</span><span>Longer weekend runs (8 to 10 miles)</span></li>
+              <li><span class="check">✓</span><span>Grip + carry supersets</span></li>
+              <li><span class="check">✓</span><span>Introduce one double session weekly (AM strength + PM jog, or vice versa)</span></li>
+              <li><span class="check">✓</span><span>Mobility and recovery emphasized</span></li>
+              <li><span class="check">✓</span><span><strong>Goal:</strong> Move well under fatigue</span></li>
+            </ul>
+            <div class="cta-row" style="margin-top: 12px;">
+              <a class="btn" href="./april.html">Open April</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>May: Peak Month</h3>
+            <p><strong>Theme:</strong> High volume, full Spartan-style training</p>
+            <ul class="list">
+              <li><span class="check">✓</span><span>Peak grip strength</span></li>
+              <li><span class="check">✓</span><span>Peak long run 11 to 13 miles</span></li>
+              <li><span class="check">✓</span><span>Back to back training days (Sat + Sun)</span></li>
+              <li><span class="check">✓</span><span>Race-pace efforts on short runs</span></li>
+              <li><span class="check">✓</span><span>Full-body strength at highest load</span></li>
+              <li><span class="check">✓</span><span>Mock Sprint/Super hybrid workouts</span></li>
+              <li><span class="check">✓</span><span><strong>Goal:</strong> Arrive durable, confident, and ready</span></li>
+            </ul>
+            <div class="cta-row" style="margin-top: 12px;">
+              <a class="btn" href="./may.html">Open May</a>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>June: Race Month</h3>
+            <p>Final sharpening, then execute the weekend.</p>
+            <ul class="list">
+              <li><span class="check">✓</span><span>Reduce volume, keep intensity controlled</span></li>
+              <li><span class="check">✓</span><span>Practice obstacles fresh, not fried</span></li>
+              <li><span class="check">✓</span><span>Dial pacing, fueling, and transitions</span></li>
+              <li><span class="check">✓</span><span>Prioritize sleep consistency</span></li>
+            </ul>
+            <div class="cta-row" style="margin-top: 12px;">
+              <a class="btn" href="./june.html">Open June</a>
+            </div>
+          </article>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="fineprint">
+        The Path to Trifecta plan was customized to meet Ben’s goals according to his current abilities. This plan is adaptable in real time through the coaching of ChadGPT based on real-time performance data from Ben.
+      </div>
+      <div>
+        © 2026 Ben Donnelly • The Path to Trifecta Training
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
 
