@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Path to Trifecta Training | February</title>
+  <meta name="description" content="February 2026 strength upgrade and work capacity plan. Strength up, grip up, endurance up (slowly and safely)." />
+
+  <style>
+    :root{
+      --bg: #070B14;
+      --panel: rgba(12,16,30,0.72);
+      --panel-2: rgba(12,16,30,0.88);
+      --stroke: rgba(255,255,255,0.12);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.70);
+      --muted-2: rgba(255,255,255,0.58);
+      --accent: #FF6A2A;
+      --accent-2: #1E63FF;
+      --shadow: 0 18px 60px rgba(0,0,0,0.55);
+      --radius: 18px;
+      --radius-lg: 24px;
+      --max: 1120px;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; background-color: var(--bg) !important; }
+    body{
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text) !important;
+      background:
+        radial-gradient(1100px 620px at 18% 10%, rgba(30,99,255,0.18), transparent 60%),
+        radial-gradient(900px 520px at 82% 12%, rgba(255,106,42,0.16), transparent 55%),
+        radial-gradient(900px 520px at 50% 105%, rgba(255,106,42,0.10), transparent 55%),
+        var(--bg) !important;
+      background-color: var(--bg) !important;
+      line-height: 1.55;
+      letter-spacing: 0.1px;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: none; }
+
+    .container{ width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+
+    /* Header */
+    .site-header{
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      background: rgba(7,11,20,0.65);
+      border-bottom: 1px solid var(--stroke);
+    }
+
+    .header-inner{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 12px 0;
+    }
+
+    .brand{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 180px;
+    }
+
+    .brand img{
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.06);
+      object-fit: cover;
+    }
+
+    .brand .title{
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand .title strong{ font-size: 14px; letter-spacing: 0.3px; }
+    .brand .title span{ font-size: 12px; color: var(--muted-2); }
+
+    .nav{
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav a{
+      font-size: 13px;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: 120ms ease;
+    }
+
+    .nav a:hover{
+      color: var(--text);
+      border-color: var(--stroke);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .nav a.active{
+      color: var(--text);
+      border-color: rgba(255,106,42,0.40);
+      background: rgba(255,106,42,0.10);
+    }
+
+    /* Hero */
+    .hero{ padding: 18px 0 0; }
+
+    .hero-card{
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--stroke);
+      box-shadow: var(--shadow);
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    }
+
+    .hero-grid{
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: stretch;
+      min-height: 320px;
+    }
+
+    .hero-content{
+      padding: 28px;
+      display: grid;
+      gap: 10px;
+      max-width: 760px;
+    }
+
+    .hero-visual{
+      position: relative;
+      border-left: 1px solid var(--stroke);
+      background: rgba(0,0,0,0.18);
+      display: grid;
+      place-items: center;
+      padding: 14px;
+    }
+
+    .hero-visual img{
+      width: 100%;
+      height: auto;
+      max-height: 540px;
+      object-fit: cover;
+      object-position: center top;
+      border-radius: 18px;
+      border: 1px solid var(--stroke);
+      box-shadow: 0 18px 50px rgba(0,0,0,0.55);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .eyebrow{
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .chip{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      width: fit-content;
+    }
+
+    .dot{
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px rgba(255,106,42,0.18);
+    }
+
+    h1{
+      margin: 0;
+      font-size: clamp(26px, 4vw, 42px);
+      line-height: 1.05;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 60ch;
+    }
+
+    .cta-row{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .btn{
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-size: 13px;
+      transition: 140ms ease;
+    }
+
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.07);
+    }
+
+    .btn.primary{
+      border-color: rgba(255,106,42,0.55);
+      background: rgba(255,106,42,0.12);
+    }
+
+    .btn.primary:hover{ background: rgba(255,106,42,0.18); }
+
+    /* Main */
+    main{ padding: 18px 0 36px; }
+
+    .section{
+      margin-top: 18px;
+      padding: 18px;
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius-lg);
+      background: rgba(12,16,30,0.55);
+    }
+
+    .section-header{
+      display: grid;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .section-header h2{
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: 0.2px;
+    }
+
+    .section-header p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 95ch;
+    }
+
+    .grid-2{
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 14px;
+      align-items: start;
+    }
+
+    .grid-3{
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card{
+      border: 1px solid var(--stroke);
+      background: var(--panel);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+
+    .card h3{
+      margin: 0 0 6px;
+      font-size: 14px;
+      letter-spacing: 0.2px;
+    }
+
+    .card p{ margin: 0; color: var(--muted); font-size: 13px; }
+
+    .list{
+      margin: 10px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .list li{
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .check{
+      width: 18px;
+      height: 18px;
+      border-radius: 8px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.06);
+      display: grid;
+      place-items: center;
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 12px;
+      line-height: 1;
+    }
+
+    .pill-row{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .pill{
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.05);
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+    }
+
+    /* Small helpers */
+    .muted{ color: var(--muted); }
+    .muted-2{ color: var(--muted-2); }
+
+    /* Footer */
+    footer{
+      border-top: 1px solid var(--stroke);
+      background: rgba(7,11,20,0.55);
+      padding: 18px 0;
+      color: var(--muted-2);
+      font-size: 12px;
+    }
+
+    .footer-inner{ display: grid; gap: 8px; }
+    .fineprint{ max-width: 95ch; }
+
+    /* Responsive */
+    @media (max-width: 960px){
+      .grid-3{ grid-template-columns: 1fr; }
+      .grid-2{ grid-template-columns: 1fr; }
+      .hero-grid{ grid-template-columns: 1fr; }
+      .hero-visual{ border-left: 0; border-top: 1px solid var(--stroke); padding: 14px; }
+      .hero-content{ padding: 22px; }
+      .nav{ justify-content: flex-start; }
+    }
+
+    @media (max-width: 520px){
+      .container{ width: min(var(--max), calc(100% - 28px)); }
+      .brand{ min-width: unset; }
+      .brand .title span{ display: none; }
+      .hero-card{ min-height: 320px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="./home.html" aria-label="The Path to Trifecta Training home">
+        <img src="https://raw.githubusercontent.com/benjdonnelly/the_path_to_trifecta/main/trifecta.jpg" alt="Path to Trifecta logo" />
+        <div class="title">
+          <strong>The Path to Trifecta</strong>
+          <span>Jan to Jun 2026 training map</span>
+        </div>
+      </a>
+
+      <nav class="nav" aria-label="Primary">
+        <a href="./home.html">Home</a>
+        <a href="./january.html">January</a>
+        <a class="active" href="./february.html">February</a>
+        <a href="./march.html">March</a>
+        <a href="./april.html">April</a>
+        <a href="./may.html">May</a>
+        <a href="./june.html">June</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-card">
+        <div class="hero-grid">
+          <div class="hero-content">
+            <div class="eyebrow">
+              <span class="chip"><span class="dot"></span> February 2026</span>
+              <span>Strength Upgrade & Work Capacity</span>
+            </div>
+            <h1>February: Strength up, grip up, endurance up</h1>
+            <p class="subtitle">Prepare the body for true Spartan demands without overtraining. Progress slowly and safely.</p>
+            <div class="cta-row">
+              <a class="btn primary" href="#week">Weekly schedule</a>
+              <a class="btn" href="#progression">Progression targets</a>
+              <a class="btn" href="#summary">Summary & highlights</a>
+            </div>
+          </div>
+
+          <div class="hero-visual" aria-label="Hero image">
+            <img
+              src="https://raw.githubusercontent.com/benjdonnelly/the_path_to_trifecta/main/hero_training.jpg"
+              alt="The Path to Trifecta Training hero banner"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <div class="container">
+
+      <section class="section">
+        <div class="section-header">
+          <h2>Theme</h2>
+          <p><strong>Strength up • Grip up • Endurance up</strong> (slowly and safely). Build work capacity without stealing recovery.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>What matters most</h3>
+            <ul class="list">
+              <li><span class="check">✓</span><span><strong>Upper body power</strong> ramps with more pulling and pressing volume.</span></li>
+              <li><span class="check">✓</span><span><strong>Grip durability</strong> grows via longer hangs and rope simulation.</span></li>
+              <li><span class="check">✓</span><span><strong>Endurance stays controlled</strong>: long run builds gradually, fully conversational.</span></li>
+              <li><span class="check">✓</span><span><strong>Recovery protects progress</strong>: active recovery choices on Friday.</span></li>
+            </ul>
+          </div>
+
+          <div class="card" style="background: var(--panel-2);">
+            <h3>Goal</h3>
+            <p class="muted">Prepare the body for true Spartan demands without overtraining.</p>
+            <div style="height: 10px"></div>
+            <p class="muted"><strong>Rule</strong>: progress slowly, stop 1–2 reps before failure most sets.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="week" class="section">
+        <div class="section-header">
+          <h2>Weekly schedule</h2>
+          <p>Repeat this structure weekly. Adjust load and volume using the progression targets below.</p>
+        </div>
+
+        <div class="grid-3">
+          <article class="card">
+            <h3>Monday: Strength (Upper Body Power)</h3>
+            <ul class="list">
+              <li><span class="check">✓</span><span>Pull-ups: 4 × max reps <span class="muted-2">(band if needed)</span></span></li>
+              <li><span class="check">✓</span><span>Negative pull-ups: 3 × 3 slow descents</span></li>
+              <li><span class="check">✓</span><span>Hang practice: 3 × 30–40 sec</span></li>
+              <li><span class="check">✓</span><span>Dumbbell or barbell bench press: 4 × 6–8</span></li>
+              <li><span class="check">✓</span><span>Dumbbell rows: 4 × 8–10</span></li>
+              <li><span class="check">✓</span><span>Push-ups: 3 × 12–15</span></li>
+              <li><span class="check">✓</span><span>Core: side planks 3 × 30 sec each side</span></li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Tuesday: Easy Run + Mobility</h3>
+            <ul class="list">
+              <li><span class="check">✓</span><span>Easy run: 3–4 miles <span class="muted-2">(comfortable Zone 2)</span></span></li>
+              <li><span class="check">✓</span><span>Hip + hamstring mobility: 10 minutes</span></li>
+              <li><span class="check">✓</span><span>Piriformis activation + stretch: 3–5 minutes</span></li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Wednesday: Strength (Lower Body + Carry Power)</h3>
+            <ul class="list">
+              <li><span class="check">✓</span><span>Squats: 4 × 8</span></li>
+              <li><span class="check">✓</span><span>Lunges or Bulgarian split squats: 3 × 10 each leg</span></li>
+              <li><span class="check">✓</span><span>Deadlifts (moderate): 3 × 6</span></li>
+              <li><span class="check">✓</span><span>Step-ups (tall box): 3 × 10</span></li>
+              <li><span class="check">✓</span><span>Farmer carry: 4 × 45–60 sec</span></li>
+              <li><span class="check">✓</span><span>Core circuit (3 rounds): dead bug 10/10 • bird dog 10/10 • hollow hold 20 sec</span></li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Thursday: Grip Day (Spartan Obstacle Prep)</h3>
+            <ul class="list">
+              <li><span class="check">✓</span><span>Dead hangs: 4 × 40–60 sec</span></li>
+              <li><span class="check">✓</span><span>Towel hangs (rope simulation): 3 × 20–30 sec</span></li>
+              <li><span class="check">✓</span><span>Ring rows or TRX rows: 3 × 12</span></li>
+              <li><span class="check">✓</span><span>Kettlebell holds: 3 × 30 sec</span></li>
+              <li><span class="check">✓</span><span>Monkey bar practice <span class="muted-2">(if available)</span></span></li>
+              <li><span class="check">✓</span><span>Finisher: 12 slow, controlled burpees</span></li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Friday: Active Recovery</h3>
+            <p class="muted">Choose one:</p>
+            <ul class="list">
+              <li><span class="check">✓</span><span>45-minute walk</span></li>
+              <li><span class="check">✓</span><span>Light bike session</span></li>
+              <li><span class="check">✓</span><span>Full-body stretching and mobility</span></li>
+              <li><span class="check">✓</span><span>Easy elliptical</span></li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Saturday: Long Run Progression</h3>
+            <p class="muted">All long runs slow, comfortable, fully conversational.</p>
+            <ul class="list">
+              <li><span class="check">✓</span><span>Week 5: 5 miles</span></li>
+              <li><span class="check">✓</span><span>Week 6: 6 miles</span></li>
+              <li><span class="check">✓</span><span>Week 7: 6 miles</span></li>
+              <li><span class="check">✓</span><span>Week 8: 7 miles</span></li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="card" style="margin-top: 14px;">
+          <h3>Sunday: Rest / Family Day</h3>
+          <ul class="list">
+            <li><span class="check">✓</span><span>Light dog walks only</span></li>
+            <li><span class="check">✓</span><span>Gentle stretching if needed</span></li>
+            <li><span class="check">✓</span><span>No structured workout</span></li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="progression" class="section">
+        <div class="section-header">
+          <h2>Progression targets</h2>
+          <p>Small changes only. The goal is momentum and clean form, not maxing out.</p>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Week by week</h3>
+            <ul class="list">
+              <li><span class="check">✓</span><span><strong>Week 1</strong>: establish working weights and clean form (leave 2 reps in the tank).</span></li>
+              <li><span class="check">✓</span><span><strong>Week 2</strong>: add 1 rep per set or +2.5 to 5 lb to key lifts.</span></li>
+              <li><span class="check">✓</span><span><strong>Week 3</strong>: keep load, tighten rest times, add one extra quality set to pulling.</span></li>
+              <li><span class="check">✓</span><span><strong>Week 4</strong>: deload (reduce volume by about 30–40%), keep movement patterns sharp.</span></li>
+            </ul>
+          </div>
+
+          <div class="card" style="background: var(--panel-2);">
+            <h3>Safety checks</h3>
+            <ul class="list">
+              <li><span class="check">✓</span><span>If pain spikes, downshift volume and prioritize mobility.</span></li>
+              <li><span class="check">✓</span><span>If sleep drops hard for 2 nights, keep intensity low and simplify the session.</span></li>
+              <li><span class="check">✓</span><span>Most sets stop 1–2 reps before failure.</span></li>
+            </ul>
+            <div class="pill-row" aria-label="February emphasis">
+              <span class="pill">Strength upgrade</span>
+              <span class="pill">Grip durability</span>
+              <span class="pill">Work capacity</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="summary" class="section">
+        <div class="section-header">
+          <h2>February activity summary and highlights</h2>
+          <p>Coming soon, it’s not done yet 😎</p>
+        </div>
+        <div class="card">
+          <p class="muted">This section will summarize your training volume, key wins, and any adjustments made from your daily logs.</p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="fineprint">
+        The Path to Trifecta plan was customized to meet Ben’s goals according to his current abilities. This plan is adaptable in real time through the coaching of ChadGPT based on real-time performance data from Ben.
+      </div>
+      <div>
+        © 2026 Ben Donnelly • The Path to Trifecta Training
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
