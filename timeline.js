@@ -1,297 +1,240 @@
-/* timeline.js
-   - Renders month ticks, event markers, and a "Today" marker
-   - Opens a modal with event details + countdown
-*/
+(function () {
+  // ===== Timeline window: Jan 1 → mid-June =====
+  const START = new Date("2026-01-01T00:00:00");
+  const END = new Date("2026-06-15T23:59:59");
 
-(() => {
-  // -----------------------------
-  // Config
-  // -----------------------------
-  const CONFIG = {
-    start: '2026-01-01T00:00:00',
-    end:   '2026-06-15T23:59:59',
-    linePaddingPx: 14, // must match CSS line padding (left/right)
-    ticks: [
-      { label: 'Jan',    date: '2026-01-01' },
-      { label: 'Feb',    date: '2026-02-01' },
-      { label: 'Mar',    date: '2026-03-01' },
-      { label: 'Apr',    date: '2026-04-01' },
-      { label: 'May',    date: '2026-05-01' },
-      { label: 'Jun',    date: '2026-06-01' },
-      { label: 'mid-Jun',date: '2026-06-15' }
-    ],
-    events: [
-      {
-        id: 'irish-double',
-        date: '2026-03-15',
-        title: 'Irish Double',
-        emoji: '🍀',
-        info: ['8K run at 7:00 AM', '5K run at 8:30 AM']
-      },
-      {
-        id: 'owens-corning',
-        date: '2026-04-26',
-        title: 'Owens Corning Half Marathon',
-        emoji: '🏃‍♂️‍➡️',
-        info: ['Half marathon run', 'Start time: TBD']
-      },
-      {
-        id: 'trifecta-weekend',
-        date: '2026-06-06',
-        title: '2026 Trifecta Weekend',
-        emoji: '🏔️',
-        info: ['Beast 21K • Super 10K • Sprint 5K', 'Beast start: 10:00 AM (OPEN)']
-      }
-    ]
-  };
+  // ===== Events =====
+  const EVENTS = [
+    {
+      id: "irish-double",
+      date: "2026-03-15",
+      title: "Irish Double",
+      emoji: "🍀",
+      info: ["8K run at 7:00 AM", "5K run at 8:30 AM"],
+    },
+    {
+      id: "owens-corning",
+      date: "2026-04-26",
+      title: "Owens Corning Half Marathon",
+      emoji: "🏃‍♂️‍➡️",
+      info: ["Half marathon run", "Start time: TBD"],
+    },
+    {
+      id: "trifecta-weekend",
+      date: "2026-06-06",
+      title: "2026 Trifecta Weekend",
+      emoji: "🏔️",
+      info: ["Beast 21K • Super 10K • Sprint 5K", "Beast start: 10:00 AM (OPEN)"],
+    },
+  ];
 
-  // -----------------------------
-  // DOM cache (expects these IDs)
-  // -----------------------------
-  const dom = {
-    header: document.querySelector('.site-header'),
-    track: document.getElementById('timelineTrack'),
-    todayMarker: document.getElementById('todayMarker'),
+  const msDay = 24 * 60 * 60 * 1000;
 
-    modal: document.getElementById('eventModal'),
-    modalClose: document.getElementById('modalClose'),
-    modalTitle: document.getElementById('eventTitle'),
-    modalDate: document.getElementById('eventDate'),
-    modalEmoji: document.getElementById('eventEmoji'),
-    modalInfo: document.getElementById('eventInfo'),
-    modalCountdown: document.getElementById('eventCountdown'),
-    modalCountdownSub: document.getElementById('eventCountdownSub'),
-  };
+  function clamp01(x) {
+    return Math.max(0, Math.min(1, x));
+  }
 
-  if (!dom.track) return; // nothing to render
-
-  // -----------------------------
-  // State
-  // -----------------------------
-  const state = {
-    START: new Date(CONFIG.start),
-    END: new Date(CONFIG.end),
-    msDay: 24 * 60 * 60 * 1000,
-    lastFocusEl: null,
-    renderRaf: 0,
-  };
-
-  // -----------------------------
-  // Helpers
-  // -----------------------------
-  const clamp01 = (x) => Math.max(0, Math.min(1, x));
-
-  const parseYmdLocal = (ymd) => new Date(`${ymd}T00:00:00`);
-
-  const fmtDate = (d) =>
-    d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
-
-  const pctForDate = (d) => {
-    const p = (d.getTime() - state.START.getTime()) / (state.END.getTime() - state.START.getTime());
+  function pctForDate(d) {
+    const p = (d.getTime() - START.getTime()) / (END.getTime() - START.getTime());
     return clamp01(p);
-  };
+  }
 
-  const leftPxFromPct = (pct) => {
-    const w = dom.track.clientWidth;
-    const pad = CONFIG.linePaddingPx;
-    const inner = Math.max(0, w - pad * 2);
-    return pad + inner * pct;
-  };
+  function fmtDate(d) {
+    return d.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  }
 
-  const daysUntil = (eventDate) => {
+  function daysUntil(eventDate) {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
     const e = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
-    return Math.round((e.getTime() - today.getTime()) / state.msDay);
-  };
+    return Math.round((e.getTime() - today.getTime()) / msDay);
+  }
 
-  const setStickyOffset = () => {
-    if (!dom.header) return;
-    const h = dom.header.offsetHeight || 0;
-    document.documentElement.style.setProperty('--sticky-top', `${h}px`);
-  };
+  function setStickyOffset(headerEl) {
+    if (!headerEl) return;
+    const h = headerEl.offsetHeight || 0;
+    document.documentElement.style.setProperty("--sticky-top", h + "px");
+  }
 
-  const clearInjected = () => {
-    dom.track.querySelectorAll('[data-injected="true"]').forEach((n) => n.remove());
-  };
+  function clearInjected(trackEl) {
+    trackEl.querySelectorAll('[data-injected="true"]').forEach((n) => n.remove());
+  }
 
-  const el = (tag, className, attrs = {}) => {
-    const node = document.createElement(tag);
-    if (className) node.className = className;
-    Object.entries(attrs).forEach(([k, v]) => node.setAttribute(k, v));
-    return node;
-  };
+  function leftPxFromPct(trackEl, pct) {
+    // keep inside the padded line area (14px on each side)
+    const w = trackEl.clientWidth;
+    const inner = w - 28;
+    return 14 + inner * pct;
+  }
 
-  // -----------------------------
-  // Modal control (safe DOM building, no innerHTML)
-  // -----------------------------
-  const openModal = (evt, triggerEl) => {
-    if (!dom.modal) return;
+  function injectTicks(trackEl) {
+    const months = [
+      { label: "Jan", date: "2026-01-01" },
+      { label: "Feb", date: "2026-02-01" },
+      { label: "Mar", date: "2026-03-01" },
+      { label: "Apr", date: "2026-04-01" },
+      { label: "May", date: "2026-05-01" },
+      { label: "Jun", date: "2026-06-01" },
+      { label: "mid-Jun", date: "2026-06-15" },
+    ];
 
-    state.lastFocusEl = triggerEl || document.activeElement;
-
-    const d = parseYmdLocal(evt.date);
-    const delta = daysUntil(d);
-
-    dom.modalEmoji.textContent = evt.emoji;
-    dom.modalTitle.textContent = evt.title;
-    dom.modalDate.textContent = fmtDate(d);
-
-    // Build list safely
-    dom.modalInfo.textContent = '';
-    const ul = el('ul', 'list');
-    evt.info.forEach((line) => {
-      const li = el('li', '');
-      const check = el('span', 'check');
-      check.textContent = '✓';
-      const text = el('span', '');
-      text.textContent = line;
-      li.appendChild(check);
-      li.appendChild(text);
-      ul.appendChild(li);
-    });
-    dom.modalInfo.appendChild(ul);
-
-    if (delta > 0) {
-      dom.modalCountdown.textContent = `${delta} day${delta === 1 ? '' : 's'}`;
-      dom.modalCountdownSub.textContent = `until ${evt.title}`;
-    } else if (delta === 0) {
-      dom.modalCountdown.textContent = 'Today';
-      dom.modalCountdownSub.textContent = "it's go time";
-    } else {
-      const ago = Math.abs(delta);
-      dom.modalCountdown.textContent = `${ago} day${ago === 1 ? '' : 's'}`;
-      dom.modalCountdownSub.textContent = `since ${evt.title}`;
-    }
-
-    dom.modal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-
-    // focus close button for accessibility
-    if (dom.modalClose) dom.modalClose.focus();
-  };
-
-  const closeModal = () => {
-    if (!dom.modal) return;
-    dom.modal.classList.remove('open');
-    document.body.style.overflow = '';
-
-    // return focus
-    if (state.lastFocusEl && typeof state.lastFocusEl.focus === 'function') {
-      state.lastFocusEl.focus();
-    }
-    state.lastFocusEl = null;
-  };
-
-  // -----------------------------
-  // Render: ticks, events, today
-  // -----------------------------
-  const injectTicks = () => {
-    const frag = document.createDocumentFragment();
-
-    CONFIG.ticks.forEach((t) => {
-      const d = parseYmdLocal(t.date);
+    months.forEach((m) => {
+      const d = new Date(m.date + "T00:00:00");
       const pct = pctForDate(d);
-      const left = leftPxFromPct(pct);
+      const left = leftPxFromPct(trackEl, pct);
 
-      const tick = el('div', 'tick', { 'data-injected': 'true' });
-      tick.style.left = `${left}px`;
+      const tick = document.createElement("div");
+      tick.className = "tick";
+      tick.style.left = left + "px";
+      tick.setAttribute("data-injected", "true");
 
-      const label = el('div', 'tick-label', { 'data-injected': 'true' });
-      label.style.left = `${left}px`;
-      label.textContent = t.label;
+      const label = document.createElement("div");
+      label.className = "tick-label";
+      label.style.left = left + "px";
+      label.textContent = m.label;
+      label.setAttribute("data-injected", "true");
 
-      frag.appendChild(tick);
-      frag.appendChild(label);
-    });
-
-    dom.track.appendChild(frag);
-  };
-
-  const injectEvents = () => {
-    const frag = document.createDocumentFragment();
-
-    CONFIG.events.forEach((evt) => {
-      const d = parseYmdLocal(evt.date);
-      const pct = pctForDate(d);
-      const left = leftPxFromPct(pct);
-
-      const stick = el('div', 'event-stick', { 'data-injected': 'true' });
-      stick.style.left = `${left}px`;
-
-      const btn = el('button', 'event-marker', {
-        type: 'button',
-        'data-injected': 'true',
-        'data-event-id': evt.id,
-        'aria-label': `${evt.title} on ${fmtDate(d)}`
-      });
-      btn.style.left = `${left}px`;
-      btn.textContent = evt.emoji;
-
-      frag.appendChild(stick);
-      frag.appendChild(btn);
-    });
-
-    dom.track.appendChild(frag);
-  };
-
-  const positionToday = () => {
-    if (!dom.todayMarker) return;
-    const now = new Date();
-    const pct = pctForDate(now);
-    const left = leftPxFromPct(pct);
-    dom.todayMarker.style.left = `${left}px`;
-
-    const inRange = now >= state.START && now <= state.END;
-    dom.todayMarker.style.display = inRange ? 'block' : 'none';
-  };
-
-  const renderTimeline = () => {
-    setStickyOffset();
-    clearInjected();
-    injectTicks();
-    injectEvents();
-    positionToday();
-  };
-
-  // Debounced/RAF render to avoid resize spam
-  const scheduleRender = () => {
-    cancelAnimationFrame(state.renderRaf);
-    state.renderRaf = requestAnimationFrame(renderTimeline);
-  };
-
-  // -----------------------------
-  // Events wiring
-  // -----------------------------
-  // Event delegation for markers (less listeners, cleaner)
-  dom.track.addEventListener('click', (e) => {
-    const btn = e.target.closest('.event-marker');
-    if (!btn) return;
-    const id = btn.getAttribute('data-event-id');
-    const evt = CONFIG.events.find((x) => x.id === id);
-    if (evt) openModal(evt, btn);
-  });
-
-  // Modal controls
-  if (dom.modalClose) dom.modalClose.addEventListener('click', closeModal);
-
-  if (dom.modal) {
-    dom.modal.addEventListener('click', (e) => {
-      if (e.target === dom.modal) closeModal();
+      trackEl.appendChild(tick);
+      trackEl.appendChild(label);
     });
   }
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && dom.modal && dom.modal.classList.contains('open')) closeModal();
-  });
+  function wireModal(modalEls) {
+    const { modal, closeBtn } = modalEls;
 
-  // Resize handling
-  window.addEventListener('resize', scheduleRender);
-  window.addEventListener('load', () => {
-    setStickyOffset();
-    scheduleRender();
-  });
+    if (closeBtn) closeBtn.addEventListener("click", () => closeModal(modal));
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeModal(modal);
+      });
+    }
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal && modal.classList.contains("open")) closeModal(modal);
+    });
+  }
 
-  // Initial render
-  renderTimeline();
+  function openModal(evt, modalEls) {
+    const { modal, emojiEl, titleEl, dateEl, infoEl, countdownEl, countdownSubEl } = modalEls;
+
+    const d = new Date(evt.date + "T00:00:00");
+    const delta = daysUntil(d);
+
+    if (emojiEl) emojiEl.textContent = evt.emoji;
+    if (titleEl) titleEl.textContent = evt.title;
+    if (dateEl) dateEl.textContent = fmtDate(d);
+
+    if (infoEl) {
+      infoEl.innerHTML =
+        '<ul class="list">' +
+        evt.info
+          .map((line) => '<li><span class="check">✓</span><span>' + line + "</span></li>")
+          .join("") +
+        "</ul>";
+    }
+
+    if (countdownEl && countdownSubEl) {
+      if (delta > 0) {
+        countdownEl.textContent = delta + " day" + (delta === 1 ? "" : "s");
+        countdownSubEl.textContent = "until " + evt.title;
+      } else if (delta === 0) {
+        countdownEl.textContent = "Today";
+        countdownSubEl.textContent = "it’s go time";
+      } else {
+        const ago = Math.abs(delta);
+        countdownEl.textContent = ago + " day" + (ago === 1 ? "" : "s");
+        countdownSubEl.textContent = "since " + evt.title;
+      }
+    }
+
+    if (modal) modal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal(modal) {
+    if (modal) modal.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  function injectEvents(trackEl, modalEls) {
+    EVENTS.forEach((e) => {
+      const d = new Date(e.date + "T00:00:00");
+      const pct = pctForDate(d);
+      const left = leftPxFromPct(trackEl, pct);
+
+      const stick = document.createElement("div");
+      stick.className = "event-stick";
+      stick.style.left = left + "px";
+      stick.setAttribute("data-injected", "true");
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "event-marker";
+      btn.style.left = left + "px";
+      btn.textContent = e.emoji;
+      btn.setAttribute("aria-label", e.title + " on " + fmtDate(d));
+      btn.setAttribute("data-injected", "true");
+
+      btn.addEventListener("click", () => openModal(e, modalEls));
+
+      trackEl.appendChild(stick);
+      trackEl.appendChild(btn);
+    });
+  }
+
+  function positionToday(trackEl, todayMarkerEl) {
+    if (!todayMarkerEl) return;
+
+    const now = new Date();
+    const pct = pctForDate(now);
+    const left = leftPxFromPct(trackEl, pct);
+
+    todayMarkerEl.style.left = left + "px";
+
+    const inRange = now >= START && now <= END;
+    todayMarkerEl.style.display = inRange ? "block" : "none";
+  }
+
+  function render() {
+    const trackEl = document.getElementById("timelineTrack");
+    if (!trackEl) return; // no timeline on this page
+
+    // If layout isn't ready yet, wait a frame (prevents 0px widths)
+    if (trackEl.clientWidth < 50) {
+      requestAnimationFrame(render);
+      return;
+    }
+
+    const headerEl = document.querySelector(".site-header");
+    const todayMarkerEl = document.getElementById("todayMarker");
+
+    const modalEls = {
+      modal: document.getElementById("eventModal"),
+      closeBtn: document.getElementById("modalClose"),
+      titleEl: document.getElementById("eventTitle"),
+      dateEl: document.getElementById("eventDate"),
+      emojiEl: document.getElementById("eventEmoji"),
+      infoEl: document.getElementById("eventInfo"),
+      countdownEl: document.getElementById("eventCountdown"),
+      countdownSubEl: document.getElementById("eventCountdownSub"),
+    };
+
+    setStickyOffset(headerEl);
+    clearInjected(trackEl);
+    injectTicks(trackEl);
+    injectEvents(trackEl, modalEls);
+    positionToday(trackEl, todayMarkerEl);
+    wireModal(modalEls);
+  }
+
+  function init() {
+    render();
+    window.addEventListener("resize", render);
+    window.addEventListener("load", render);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
 })();
