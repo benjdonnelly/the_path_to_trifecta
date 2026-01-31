@@ -227,6 +227,13 @@ a:hover{ text-decoration: none; }
   outline: 2px solid rgba(255,106,42,0.75);
   outline-offset: 3px;
 }
+.event-stick.edge-left .event-marker{
+  transform: translateX(0);
+}
+
+.event-stick.edge-right .event-marker{
+  transform: translateX(-100%);
+}
 
 /* Today marker */
 .today-marker{
@@ -264,6 +271,15 @@ a:hover{ text-decoration: none; }
   background: rgba(30,99,255,0.16);
   color: rgba(255,255,255,0.88);
   white-space: nowrap;
+}
+.today-marker.edge-left .today-badge{
+  left: 14px;              /* match your timeline-line padding */
+  transform: translateX(0);
+}
+
+.today-marker.edge-right .today-badge{
+  left: calc(100% - 14px);
+  transform: translateX(-100%);
 }
 
 /* Hero */
