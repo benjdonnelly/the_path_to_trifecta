@@ -301,6 +301,43 @@
   </footer>
   <div class="modal-overlay" id="eventModal" role="dialog" aria-modal="true">
   </div>
+  <!-- Timeline modal -->
+<div class="modal-overlay" id="eventModal" role="dialog" aria-modal="true" aria-labelledby="eventTitle">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="mh-left">
+        <div class="emoji" id="eventEmoji" aria-hidden="true">🍀</div>
+        <div class="title">
+          <strong id="eventTitle">Event</strong>
+          <span id="eventDate">Date</span>
+        </div>
+      </div>
+      <button class="modal-close" id="modalClose" type="button" aria-label="Close">Close</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-col left">
+        <h3 style="margin:0 0 6px; font-size:14px;">Event information</h3>
+        <div id="eventInfo" style="color: var(--muted); font-size:13px;"></div>
+      </div>
+
+      <div class="modal-col right">
+        <div class="countdown">
+          <p class="big" id="eventCountdown">0 days</p>
+          <p class="small" id="eventCountdownSub">until event day</p>
+        </div>
+
+        <div class="card" style="background: rgba(255,255,255,0.02);">
+          <h3 style="margin:0 0 6px; font-size:14px;">Tip</h3>
+          <p style="margin:0; color: var(--muted); font-size:13px;">
+            This will expand later with milestones and prep cues.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
   <script src="./timeline.js" defer></script>
 </body>
 </html>
