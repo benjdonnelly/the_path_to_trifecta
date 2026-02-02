@@ -186,7 +186,13 @@
 
         if (emojiEl) emojiEl.textContent = evt.emoji;
         if (titleEl) titleEl.textContent = evt.title;
-        if (dateEl) dateEl.textContent = fmtDate(target);
+        if (dateEl) {
+          dateEl.textContent = new Intl.DateTimeFormat("en-US", {
+            timeZone: "America/New_York",
+            dateStyle: "full",
+            timeStyle: "short",
+          }).format(target);
+        }
 
         if (infoEl) {
           const html = evt.info
