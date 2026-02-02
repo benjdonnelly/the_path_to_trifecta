@@ -1,7 +1,5 @@
     (function () {
       // Treat all countdown targets as Eastern Time (handles DST correctly).
-      const TZ = "America/New_York";
-
       // Timeline window: Jan 1 → mid-June
       const START = new Date("2026-01-01T00:00:00");
       const END = new Date("2026-06-15T23:59:59");
@@ -12,6 +10,7 @@
           id: "irish-double",
           date: "2026-03-15",
           time: "07:00",
+          targetISO: "2026-03-15T07:00:00-04:00",
           title: "Irish Double",
           emoji: "🍀",
           info: [
@@ -26,6 +25,7 @@
           id: "owens-corning",
           date: "2026-04-26",
           time: "06:30",
+          targetISO: "2026-04-26T06:30:00-04:00",
           title: "Owens Corning Half Marathon",
           emoji: "🏃‍♂️‍➡️",
           info: [
@@ -39,6 +39,7 @@
           id: "trifecta-weekend",
           date: "2026-06-06",
           time: "10:00",
+          targetISO: "2026-06-06T10:00:00-04:00",
           title: "2026 Trifecta Weekend",
           emoji: "🏔️",
           info: [
@@ -113,62 +114,6 @@
         });
       }
 
-      // ===== Time zone helpers (ET-aware countdown targets) =====
-      function tzOffsetMinutes(date, timeZone) {
-        const dtf = new Intl.DateTimeFormat("en-US", {
-          timeZone,
-          hour12: false,
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-        });
-
-        const parts = dtf.formatToParts(date).reduce((acc, p) => {
-          if (p.type !== "literal") acc[p.type] = p.value;
-          return acc;
-        }, {});
-
-        const asUTC = Date.UTC(
-          Number(parts.year),
-          Number(parts.month) - 1,
-          Number(parts.day),
-          Number(parts.hour),
-          Number(parts.minute),
-          Number(parts.second)
-        );
-
-        return (asUTC - date.getTime()) / 60000;
-      }
-
-      function zonedTimeToUtcMs(y, m, d, hh, mm, ss, timeZone) {
-        // Two-pass conversion handles DST boundaries reliably.
-        let utcGuess = Date.UTC(y, m - 1, d, hh, mm, ss);
-        let offset = tzOffsetMinutes(new Date(utcGuess), timeZone);
-        utcGuess = utcGuess - offset * 60000;
-        offset = tzOffsetMinutes(new Date(utcGuess), timeZone);
-        return utcGuess - offset * 60000;
-      }
-
-      function parseYMD(ymd) {
-        const [Y, M, D] = ymd.split("-").map(Number);
-        return { Y, M, D };
-      }
-
-      function parseHM(hm) {
-        const [H, M] = hm.split(":").map(Number);
-        return { H, M };
-      }
-
-      function targetUtcDateForEvent(evt) {
-        const { Y, M, D } = parseYMD(evt.date);
-        const { H, M: Min } = parseHM(evt.time || "00:00");
-        const ms = zonedTimeToUtcMs(Y, M, D, H, Min, 0, TZ);
-        return new Date(ms);
-      }
-
       // ===== Countdown helpers (DD HH MM SS) =====
       function pad2(n) {
         return String(n).padStart(2, "0");
@@ -237,7 +182,7 @@
 
       function openModal(evt, modalEls) {
         const { modal, emojiEl, titleEl, dateEl, infoEl } = modalEls;
-        const target = targetUtcDateForEvent(evt);
+        const target = new Date(evt.targetISO);
 
         if (emojiEl) emojiEl.textContent = evt.emoji;
         if (titleEl) titleEl.textContent = evt.title;
