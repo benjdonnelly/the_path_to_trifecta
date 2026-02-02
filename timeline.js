@@ -183,18 +183,6 @@
       function openModal(evt, modalEls) {
         const { modal, emojiEl, titleEl, dateEl, infoEl } = modalEls;
         const target = new Date(evt.targetISO);
-const tz = "America/New_York";
-console.log("---- COUNTDOWN DEBUG ----");
-console.log("NOW local:", new Date().toString());
-console.log("NOW UTC  :", new Date().toISOString());
-console.log("TARGET ISO:", evt.targetISO);
-console.log("TARGET local:", target.toString());
-console.log("TARGET UTC  :", target.toISOString());
-console.log("TARGET as ET:", new Intl.DateTimeFormat("en-US", {
-  timeZone: tz, dateStyle: "full", timeStyle: "long"
-}).format(target));
-console.log("Hours until (float):", (target.getTime() - Date.now()) / 3600000);
-console.log("-------------------------");
 
         if (emojiEl) emojiEl.textContent = evt.emoji;
         if (titleEl) titleEl.textContent = evt.title;
