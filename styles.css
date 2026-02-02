@@ -637,6 +637,49 @@ footer{
   justify-content: center;
   gap: 14px;
 }
+.countdown-time{
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  align-items: end;
+  text-align: center;
+}
+
+.countdown-seg{
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  position: relative;
+  padding: 4px 0;
+}
+
+/* subtle segment separators */
+.countdown-seg:not(:last-child)::after{
+  content: "";
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  right: -7px;
+  width: 1px;
+  background: rgba(255,255,255,0.10);
+}
+
+.countdown-num{
+  font-size: 44px;
+  line-height: 1;
+  letter-spacing: 1.6px;
+  color: rgba(255,255,255,0.92);
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+}
+
+.countdown-lbl{
+  font-size: 11px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--muted-2);
+}
+
 .countdown-title{
   text-align: center;
   color: var(--muted);
@@ -653,25 +696,12 @@ footer{
   text-transform: uppercase;
   margin: 0;
 }
-.countdown .big{
-  font-size: 26px;
-  line-height: 1.1;
-  margin: 0;
-}
+.modal .list{ margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; color: var(--muted); font-size: 13px; }
+.modal .list li{ display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: start; }
+.modal .list li.no-check{ grid-template-columns: 1fr; }
+.modal .list .label-strong{ font-weight: 800; color: rgba(255,255,255,0.90); letter-spacing: 0.2px; }
 
-.countdown .small{
-  margin: 6px 0 0;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.modal-body .list{ margin-top: 10px; }
-.list{ margin: 10px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; color: var(--muted); font-size: 13px; }
-.list li{ display: grid; grid-template-columns: 18px 1fr; gap: 10px; align-items: start; }
-.list li.no-check{ grid-template-columns: 1fr; }
-.list .label-strong{ font-weight: 800; color: rgba(255,255,255,0.90); letter-spacing: 0.2px; }
-
-.check{
+.modal .check{
   width: 18px; height: 18px;
   border-radius: 8px;
   border: 1px solid var(--stroke);
@@ -682,7 +712,6 @@ footer{
   font-size: 12px;
   line-height: 1;
 }
-
 
 /* Responsive */
 @media (max-width: 960px){
