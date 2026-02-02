@@ -10,7 +10,7 @@
           id: "irish-double",
           date: "2026-03-15",
           time: "07:00",
-          targetISO: "2026-03-15T07:00:00-04:00",
+          targetISO: "2026-03-15T07:00:00-06:00",
           title: "Irish Double",
           emoji: "🍀",
           info: [
