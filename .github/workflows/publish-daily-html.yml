@@ -23,7 +23,7 @@ jobs:
             -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
             > the_path_to_trifecta/data/daily_logs_coach.json
 
-      - name: Build daily.html (sections: last 7, last 30, by month)
+      - name: "Build daily.html (sections: last 7, last 30, by month)"
         env:
           TZ: America/Detroit
         run: |
