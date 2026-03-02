@@ -1,0 +1,157 @@
+name: Publish Daily Logs HTML
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # every 6 hours
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch logs from Supabase (coach view)
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          mkdir -p the_path_to_trifecta/data
+          # Pull plenty so month sections have data
+          curl -s "${SUPABASE_URL}/rest/v1/daily_logs_rawselect=*&order=timestamptz.desc&limit=500" \
+            -H "apikey: ${SUPABASE_ANON_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            > the_path_to_trifecta/data/daily_logs_coach.json
+
+      - name: Build daily.html (sections: last 7, last 30, by month)
+        env:
+          TZ: America/Detroit
+        run: |
+          python - << 'PY'
+          import json, html, datetime
+          from pathlib import Path
+
+          DATA = Path("the_path_to_trifecta/data/daily_logs_coach.json")
+          rows = json.loads(DATA.read_text(encoding="utf-8")) if DATA.exists() else []
+
+          # ---- CONFIG ----
+          TS_FIELD = "timestamptz"    # change if needed
+          MONTHS = ["January","February","March","April","May","June"]
+          YEAR = 2026
+          # ---------------
+
+          def parse_ts(s):
+            # Expect ISO like 2026-03-01T10:00:00+00:00
+            if not s: return None
+            try:
+              return datetime.datetime.fromisoformat(s.replace("Z","+00:00"))
+            except Exception:
+              return None
+
+          # filter to only rows with a parsable timestamp
+          cleaned = []
+          for r in rows:
+            ts = parse_ts(r.get(TS_FIELD))
+            if ts:
+              r["_ts"] = ts
+              cleaned.append(r)
+
+          # Sort newest first
+          cleaned.sort(key=lambda r: r["_ts"], reverse=True)
+
+          # Compute cutoffs in Detroit local date terms (good enough with tz-aware timestamps)
+          now = datetime.datetime.now(datetime.timezone.utc)
+          cutoff_7 = now - datetime.timedelta(days=7)
+          cutoff_30 = now - datetime.timedelta(days=30)
+
+          last7 = [r for r in cleaned if r["_ts"] >= cutoff_7]
+          last30 = [r for r in cleaned if r["_ts"] >= cutoff_30]
+
+          # Group by month Jan-Jun 2026
+          by_month = {m: [] for m in MONTHS}
+          for r in cleaned:
+            ts = r["_ts"].astimezone(datetime.timezone.utc)
+            if ts.year != YEAR:
+              continue
+            month_name = ts.strftime("%B")
+            if month_name in by_month:
+              by_month[month_name].append(r)
+
+          def render_table(rows_subset, cols=None, max_rows=None):
+            if not rows_subset:
+              return "<p>No rows.</p>"
+            if max_rows:
+              rows_subset = rows_subset[:max_rows]
+            # default columns = keys from first row minus helper fields
+            if cols is None:
+              cols = [c for c in rows_subset[0].keys() if not c.startswith("_")]
+            def td(v):
+              if v is None: return ""
+              return html.escape(str(v))
+            out = []
+            out.append("<div class='tablewrap'><table><thead><tr>")
+            out.append("".join(f"<th>{html.escape(c)}</th>" for c in cols))
+            out.append("</tr></thead><tbody>")
+            for r in rows_subset:
+              out.append("<tr>" + "".join(f"<td>{td(r.get(c))}</td>" for c in cols) + "</tr>")
+            out.append("</tbody></table></div>")
+            return "".join(out)
+
+          updated = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M UTC")
+
+          # Build HTML
+          page = []
+          page.append("<!doctype html><html><head><meta charset='utf-8'/>")
+          page.append("<meta name='robots' content='noindex,nofollow'/>")
+          page.append("<title>Daily Logs (Coach)</title>")
+          page.append("""
+          <style>
+            body{font-family:system-ui,Arial;margin:24px;line-height:1.35}
+            .meta{color:#555}
+            h1{margin:0 0 8px}
+            h2{margin-top:28px}
+            details{margin:12px 0}
+            summary{cursor:pointer;font-weight:600}
+            table{border-collapse:collapse;width:100%}
+            th,td{border:1px solid #ddd;padding:8px;vertical-align:top}
+            th{background:#fafafa;position:sticky;top:0}
+            .tablewrap{max-height:70vh;overflow:auto;border:1px solid #eee;border-radius:10px}
+            .pill{display:inline-block;padding:2px 8px;border:1px solid #ddd;border-radius:999px;margin-left:8px;color:#333}
+          </style>
+          """)
+          page.append("</head><body>")
+          page.append("<h1>Daily Logs (Coach)</h1>")
+          page.append(f"<p class='meta'>Auto-generated from Supabase. Updated: <strong>{updated}</strong>. Total rows fetched: <strong>{len(cleaned)}</strong>.</p>")
+
+          # Sections: last 7 / last 30
+          page.append("<h2>Last 7 Days</h2>")
+          page.append(f"<p class='meta'>Rows: <strong>{len(last7)}</strong></p>")
+          page.append(render_table(last7))
+
+          page.append("<h2>Last 30 Days</h2>")
+          page.append(f"<p class='meta'>Rows: <strong>{len(last30)}</strong></p>")
+          page.append(render_table(last30))
+
+          # Month sections (Jan-Jun)
+          page.append("<h2>By Month (Jan–Jun 2026)</h2>")
+          page.append("<p class='meta'>Expandable sections. Newest first within each month.</p>")
+
+          for m in MONTHS:
+            subset = by_month[m]
+            page.append("<details>")
+            page.append(f"<summary>{m} <span class='pill'>rows: {len(subset)}</span></summary>")
+            page.append(render_table(subset))
+            page.append("</details>")
+
+          page.append("</body></html>")
+
+          OUT = Path("the_path_to_trifecta/daily.html")
+          OUT.write_text("".join(page), encoding="utf-8")
+          PY
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add the_path_to_trifecta/daily.html the_path_to_trifecta/data/daily_logs_coach.json
+          git diff --cached --quiet || (git commit -m "Update daily logs HTML" && git push)
