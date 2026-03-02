@@ -20,7 +20,7 @@ jobs:
           curl -s "${SUPABASE_URL}/rest/v1/daily_logs_raw?select=*&order=timestamptz.desc&limit=500" \
             -H "apikey: ${SUPABASE_ANON_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
-            -H "Accept-Profile: path_to_trifecta_2026" \
+            -H "Accept: application/json" \
             > the_path_to_trifecta/data/daily_logs_coach.json
 
       - name: "Build daily.html (sections: last 7, last 30, by month)"
