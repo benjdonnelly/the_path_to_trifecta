@@ -11,16 +11,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch logs from Supabase (coach view)
+      - name: Fetch logs from Supabase
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
           mkdir -p the_path_to_trifecta/data
           # Pull plenty so month sections have data
-          curl -s "${SUPABASE_URL}/rest/v1/daily_logs_rawselect=*&order=timestamptz.desc&limit=500" \
+          curl -s "${SUPABASE_URL}/rest/v1/daily_logs_raws?elect=*&order=timestamptz.desc&limit=500" \
             -H "apikey: ${SUPABASE_ANON_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            -H "Accept-Profile: path_to_trifecta_2026" \
             > the_path_to_trifecta/data/daily_logs_coach.json
 
       - name: "Build daily.html (sections: last 7, last 30, by month)"
