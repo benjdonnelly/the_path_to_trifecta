@@ -18,7 +18,7 @@ jobs:
         run: |
           mkdir -p the_path_to_trifecta/data
           # Pull plenty so month sections have data
-          curl -s "${SUPABASE_URL}/rest/v1/v_daily_logs_coach?select=*&order=timestamptz.desc&limit=500" \
+          curl -s "${SUPABASE_URL}/rest/v1/daily_logs_rawselect=*&order=timestamptz.desc&limit=500" \
             -H "apikey: ${SUPABASE_ANON_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
             > the_path_to_trifecta/data/daily_logs_coach.json
