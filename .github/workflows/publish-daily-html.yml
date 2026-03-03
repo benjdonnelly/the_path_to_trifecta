@@ -17,7 +17,7 @@ jobs:
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
           mkdir -p the_path_to_trifecta/data
-          curl -s "${SUPABASE_URL}/rest/v1/daily_logs_raw?select=*&order=timestamptz.desc&limit=500" \
+          curl -s "${SUPABASE_URL}/rest/v1/daily_logs_raw?select=*&order=work_out_date.desc.nullslast,timestamptz.desc&limit=500" \
             -H "apikey: ${SUPABASE_ANON_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
             -H "Accept: application/json" \
@@ -54,45 +54,66 @@ jobs:
           if isinstance(rows, list) and rows and isinstance(rows[0], str):
               rows = []
           # ---- CONFIG ----
-          TS_FIELD = "timestamptz"    # change if needed
+          TS_FIELD = "timestamptz"         # timestamptz in Supabase
+          DATE_FIELD = "work_out_date"     # date (YYYY-MM-DD) you want to drive ordering
           MONTHS = ["January","February","March","April","May","June"]
           YEAR = 2026
-          # ---------------
-
+          
           def parse_ts(s):
-            # Expect ISO like 2026-03-01T10:00:00+00:00
             if not s: return None
             try:
               return datetime.datetime.fromisoformat(s.replace("Z","+00:00"))
             except Exception:
               return None
-
-          # filter to only rows with a parsable timestamp
+          
+          def parse_date(s):
+            # Expect YYYY-MM-DD
+            if not s: return None
+            try:
+              return datetime.date.fromisoformat(str(s))
+            except Exception:
+              return None
+          
           cleaned = []
           for r in rows:
             ts = parse_ts(r.get(TS_FIELD))
-            if ts:
-              r["_ts"] = ts
-              cleaned.append(r)
-
-          # Sort newest first
-          cleaned.sort(key=lambda r: r["_ts"], reverse=True)
-
-          # Compute cutoffs in Detroit local date terms (good enough with tz-aware timestamps)
-          now = datetime.datetime.now(datetime.timezone.utc)
-          cutoff_7 = now - datetime.timedelta(days=7)
-          cutoff_30 = now - datetime.timedelta(days=30)
-
-          last7 = [r for r in cleaned if r["_ts"] >= cutoff_7]
-          last30 = [r for r in cleaned if r["_ts"] >= cutoff_30]
+            d  = parse_date(r.get(DATE_FIELD))
+          
+            # fallback: if work_out_date missing, derive date from timestamptz
+            if d is None and ts is not None:
+              d = ts.date()
+          
+            # if we can't place it on a date, skip it
+            if d is None:
+              continue
+          
+            r["_ts"] = ts
+            r["_d"] = d
+            cleaned.append(r)
+          
+          # Sort newest workout date first, then newest timestamp as tie-breaker
+          def sort_key(r):
+            ts = r.get("_ts")
+            ts_val = ts.timestamp() if ts else 0
+            return (r["_d"], ts_val)
+          
+          cleaned.sort(key=sort_key, reverse=True)
+          
+          # Cutoffs based on DATE (not timestamp)
+          today = datetime.datetime.now().date()  # runner machine date is fine since we’re comparing dates
+          cutoff_7  = today - datetime.timedelta(days=7)
+          cutoff_30 = today - datetime.timedelta(days=30)
+          
+          last7  = [r for r in cleaned if r["_d"] >= cutoff_7]
+          last30 = [r for r in cleaned if r["_d"] >= cutoff_30]
 
           # Group by month Jan-Jun 2026
           by_month = {m: [] for m in MONTHS}
           for r in cleaned:
-            ts = r["_ts"].astimezone(datetime.timezone.utc)
-            if ts.year != YEAR:
+            d = r["_d"]
+            if d.year != YEAR:
               continue
-            month_name = ts.strftime("%B")
+            month_name = d.strftime("%B")
             if month_name in by_month:
               by_month[month_name].append(r)
 
