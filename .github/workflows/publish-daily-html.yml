@@ -118,13 +118,47 @@ jobs:
               by_month[month_name].append(r)
 
           def render_table(rows_subset, cols=None, max_rows=None):
+          DEFAULT_COLS = [
+            "work_out_date",
+            "timestamptz",
+            "workout_start_time",
+            "workout_duration_min",
+            "primary_session_type",
+            "session_tags",
+            "exercises",
+            "overall_workout_rpe",
+            "oura_readiness_score",
+            "oura_rhr_bpm_av",
+            "oura_hrv_ms",
+            "oura_sleep_score",
+            "time_slept",
+            "breakfast",
+            "lunch",
+            "dinner",
+            "pre_workout_nutrition",
+            "post_workout_nutrition",
+            "nutrition_notes",
+            "ksm66_taken",
+            "ksm66_mg",
+            "magnesium_taken",
+            "magnesium_mg",
+            "daytime_stress",
+            "energy_2_5",
+            "wired_but_tired",
+            "evening_cravings",
+            "late_eating",
+            "win_of_day",
+            "struggles_pain",
+            "questions_for_coach",
+            "milestones"
+          ]
             if not rows_subset:
               return "<p>No rows.</p>"
             if max_rows:
               rows_subset = rows_subset[:max_rows]
             # default columns = keys from first row minus helper fields
             if cols is None:
-              cols = [c for c in rows_subset[0].keys() if not c.startswith("_")]
+              cols = DEFAULT_COLS
             def td(v):
               if v is None: return ""
               return html.escape(str(v))
