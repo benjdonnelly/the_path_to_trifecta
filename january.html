@@ -36,6 +36,20 @@
       </nav>
     </div>
   </header>
+  <section class="timeline-wrap" aria-label="Training timeline">
+    <div class="timeline">
+      <div class="timeline-shell">
+        <div class="timeline-track" id="timelineTrack">
+          <div class="timeline-line"></div>
+          <!-- Ticks/labels injected by JS -->
+          <!-- Events injected by JS -->
+          <div class="today-marker" id="todayMarker" aria-hidden="true">
+          <div class="today-badge">Today</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <section class="hero">
     <div class="container">
@@ -261,5 +275,54 @@
       </div>
     </div>
   </footer>
+  <!-- Timeline modal -->
+  <div class="modal-overlay" id="eventModal" role="dialog" aria-modal="true" aria-labelledby="eventTitle">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="mh-left">
+          <div class="emoji" id="eventEmoji" aria-hidden="true">🍀</div>
+          <div class="title">
+            <strong id="eventTitle">Event</strong>
+            <span id="eventDate">Date</span>
+          </div>
+        </div>
+        <button class="modal-close" id="modalClose" type="button" aria-label="Close">Close</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="modal-col left">
+          <h3 style="margin:0 0 6px; font-size:14px;">Event information</h3>
+          <div id="eventInfo" style="color: var(--muted); font-size:13px;"></div>
+        </div>
+
+        <div class="modal-col right">
+          <div class="countdown">
+            <p class="countdown-title" id="eventCountdownTitle">until Event</p>
+
+            <div class="countdown-time" aria-label="Countdown timer">
+              <div class="countdown-seg">
+                <div class="countdown-num" id="cdDays">00</div>
+                <div class="countdown-lbl">Days</div>
+              </div>
+              <div class="countdown-seg">
+                <div class="countdown-num" id="cdHours">00</div>
+                <div class="countdown-lbl">Hours</div>
+              </div>
+              <div class="countdown-seg">
+                <div class="countdown-num" id="cdMinutes">00</div>
+                <div class="countdown-lbl">Minutes</div>
+              </div>
+              <div class="countdown-seg">
+                <div class="countdown-num" id="cdSeconds">00</div>
+                <div class="countdown-lbl">Seconds</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="./timeline.js" defer></script>
 </body>
 </html>
