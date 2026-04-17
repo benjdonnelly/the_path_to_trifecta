@@ -89,6 +89,35 @@
       </div>
     </div>
   </section>
+  <section class="race-countdown-wrap" aria-label="Half marathon countdown">
+    <div class="container">
+      <div class="race-countdown-card">
+        <div class="race-countdown-header">
+          <span class="chip"><span class="dot"></span> June 2026 target</span>
+          <p class="race-countdown-subtitle">Countdown to Half Marathon Day</p>
+        </div>
+        <div class="race-countdown-time" aria-live="polite">
+          <div class="race-countdown-seg">
+            <div class="race-countdown-num" id="hmCdDays">00</div>
+            <div class="race-countdown-lbl">Days</div>
+          </div>
+          <div class="race-countdown-seg">
+            <div class="race-countdown-num" id="hmCdHours">00</div>
+            <div class="race-countdown-lbl">Hours</div>
+          </div>
+          <div class="race-countdown-seg">
+            <div class="race-countdown-num" id="hmCdMinutes">00</div>
+            <div class="race-countdown-lbl">Minutes</div>
+          </div>
+          <div class="race-countdown-seg">
+            <div class="race-countdown-num" id="hmCdSeconds">00</div>
+            <div class="race-countdown-lbl">Seconds</div>
+          </div>
+        </div>
+        <p class="race-countdown-footnote" id="hmCdStatus">Locked on June 6, 2026 at 6:30 AM ET.</p>
+      </div>
+    </div>
+  </section>
 
   <main>
     <div class="container">
@@ -350,6 +379,7 @@
     </div>
   </div>
 
+  <script src="./home-countdown.js" defer></script>
   <script src="./timeline.js" defer></script>
 </body>
 </html>
