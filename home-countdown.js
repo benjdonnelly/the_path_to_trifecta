@@ -1,5 +1,5 @@
 (function () {
-  const TARGET = new Date("2026-06-06T06:30:00-04:00");
+  const TARGET = new Date("2026-06-06T10:00:00-04:00");
 
   const els = {
     days: document.getElementById("hmCdDays"),
@@ -43,7 +43,7 @@
       return true;
     }
 
-    els.status.textContent = "Locked on June 6, 2026 at 6:30 AM ET.";
+    els.status.textContent = "Locked on June 6, 2026 at 10:00 AM ET.";
     return false;
   }
 
